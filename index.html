@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Cosmic Touch</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: #000;
+    touch-action: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+  }
+  canvas {
+    display: block;
+    width: 100%; height: 100%;
+  }
+  #ui-overlay {
+    position: fixed; top: 0; left: 0; right: 0;
+    padding: 16px;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    pointer-events: none; z-index: 10;
+  }
+  #ui-overlay > * { pointer-events: auto; }
+  #title {
+    color: rgba(255,255,255,0.7);
+    font-size: 14px; font-weight: 300;
+    letter-spacing: 3px; text-transform: uppercase;
+    text-shadow: 0 0 20px rgba(100,150,255,0.5);
+    transition: opacity 2s;
+  }
+  #mode-btn {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.7);
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s;
+  }
+  #mode-btn:active {
+    background: rgba(255,255,255,0.2);
+    transform: scale(0.95);
+  }
+  #hint {
+    position: fixed; bottom: 40px; left: 0; right: 0;
+    text-align: center;
+    color: rgba(255,255,255,0.4);
+    font-size: 13px; font-weight: 300;
+    letter-spacing: 1px;
+    pointer-events: none;
+    animation: pulse 3s ease-in-out infinite;
+    transition: opacity 2s;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+  }
+  #fps {
+    position: fixed; bottom: 10px; right: 10px;
+    color: rgba(255,255,255,0.2);
+    font-size: 10px; pointer-events: none;
+  }
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+<div id="ui-overlay">
+  <div id="title">Cosmic Touch</div>
+  <button id="mode-btn" onclick="cycleMode()">Nebula</button>
+</div>
+<div id="hint">Touch anywhere to create</div>
+<div id="fps"></div>
+
+<script>
+// ============ SETUP ============
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const hint = document.getElementById('hint');
+const modeBtn = document.getElementById('mode-btn');
+const fpsEl = document.getElementById('fps');
+
+let W, H, dpr;
+function resize() {
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ============ MODES ============
+const MODES = [
+  { name: 'Nebula',    colors: ['#6C63FF','#FF6584','#43E8D8','#FFD93D','#FF8A5C'] },
+  { name: 'Aurora',    colors: ['#00FF87','#60EFFF','#0061FF','#B967FF','#01CDFE'] },
+  { name: 'Inferno',   colors: ['#FF0000','#FF4500','#FF8C00','#FFD700','#FFF8DC'] },
+  { name: 'Ocean',     colors: ['#0077B6','#00B4D8','#90E0EF','#CAF0F8','#48CAE4'] },
+  { name: 'Synthwave', colors: ['#FF00FF','#8B00FF','#FF1493','#00FFFF','#FFD700'] },
+  { name: 'Firefly',   colors: ['#F4E04D','#8FBC8F','#2E8B57','#ADFF2F','#FFFFE0'] },
+];
+let modeIndex = 0;
+
+function cycleMode() {
+  modeIndex = (modeIndex + 1) % MODES.length;
+  modeBtn.textContent = MODES[modeIndex].name;
+  // Flash button
+  modeBtn.style.borderColor = MODES[modeIndex].colors[0];
+  setTimeout(() => modeBtn.style.borderColor = 'rgba(255,255,255,0.15)', 600);
+}
+
+function getColor() {
+  const c = MODES[modeIndex].colors;
+  return c[Math.floor(Math.random() * c.length)];
+}
+
+// ============ PARTICLES ============
+const MAX_PARTICLES = 1200;
+const particles = [];
+const attractors = []; // touch points
+
+class Particle {
+  constructor(x, y, color) {
+    this.x = x;
+    this.y = y;
+    this.ox = x;
+    this.oy = y;
+    this.vx = (Math.random() - 0.5) * 4;
+    this.vy = (Math.random() - 0.5) * 4;
+    this.size = Math.random() * 3 + 1;
+    this.life = 1;
+    this.decay = Math.random() * 0.003 + 0.001;
+    this.color = color;
+    this.angle = Math.random() * Math.PI * 2;
+    this.spin = (Math.random() - 0.5) * 0.1;
+    this.trail = [];
+    this.maxTrail = Math.floor(Math.random() * 8) + 4;
+    this.glow = Math.random() > 0.7;
+  }
+
+  update() {
+    // Gravity toward attractors
+    for (const a of attractors) {
+      const dx = a.x - this.x;
+      const dy = a.y - this.y;
+      const dist = Math.sqrt(dx * dx + dy * dy) + 1;
+      const force = Math.min(a.strength / (dist * 0.5), 2);
+      this.vx += (dx / dist) * force;
+      this.vy += (dy / dist) * force;
+    }
+
+    // Orbital spin
+    this.angle += this.spin;
+    this.vx += Math.cos(this.angle) * 0.05;
+    this.vy += Math.sin(this.angle) * 0.05;
+
+    // Damping
+    this.vx *= 0.98;
+    this.vy *= 0.98;
+
+    // Store trail
+    this.trail.push({ x: this.x, y: this.y });
+    if (this.trail.length > this.maxTrail) this.trail.shift();
+
+    this.x += this.vx;
+    this.y += this.vy;
+    this.life -= this.decay;
+  }
+
+  draw(ctx) {
+    if (this.life <= 0) return;
+    const alpha = this.life;
+
+    // Draw trail
+    if (this.trail.length > 1) {
+      ctx.beginPath();
+      ctx.moveTo(this.trail[0].x, this.trail[0].y);
+      for (let i = 1; i < this.trail.length; i++) {
+        ctx.lineTo(this.trail[i].x, this.trail[i].y);
+      }
+      ctx.strokeStyle = this.color + hexAlpha(alpha * 0.3);
+      ctx.lineWidth = this.size * 0.5;
+      ctx.stroke();
+    }
+
+    // Draw particle
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size * alpha, 0, Math.PI * 2);
+    ctx.fillStyle = this.color + hexAlpha(alpha * 0.8);
+    ctx.fill();
+
+    // Glow
+    if (this.glow) {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size * 3 * alpha, 0, Math.PI * 2);
+      ctx.fillStyle = this.color + hexAlpha(alpha * 0.15);
+      ctx.fill();
+    }
+  }
+}
+
+function hexAlpha(a) {
+  const v = Math.max(0, Math.min(255, Math.floor(a * 255)));
+  return v.toString(16).padStart(2, '0');
+}
+
+// ============ BACKGROUND STARS ============
+const stars = [];
+for (let i = 0; i < 200; i++) {
+  stars.push({
+    x: Math.random(),
+    y: Math.random(),
+    size: Math.random() * 1.5 + 0.3,
+    twinkle: Math.random() * Math.PI * 2,
+    speed: Math.random() * 0.02 + 0.005
+  });
+}
+
+function drawStars() {
+  for (const s of stars) {
+    s.twinkle += s.speed;
+    const alpha = 0.2 + Math.sin(s.twinkle) * 0.15;
+    ctx.beginPath();
+    ctx.arc(s.x * W, s.y * H, s.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+    ctx.fill();
+  }
+}
+
+// ============ CONNECTIONS ============
+function drawConnections() {
+  const maxDist = 80;
+  const len = particles.length;
+  if (len > 400) return; // skip for performance
+
+  for (let i = 0; i < len; i++) {
+    const a = particles[i];
+    if (a.life < 0.3) continue;
+    for (let j = i + 1; j < len; j++) {
+      const b = particles[j];
+      if (b.life < 0.3) continue;
+      const dx = a.x - b.x;
+      const dy = a.y - b.y;
+      const dist = dx * dx + dy * dy;
+      if (dist < maxDist * maxDist) {
+        const alpha = (1 - Math.sqrt(dist) / maxDist) * a.life * b.life * 0.15;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.strokeStyle = a.color + hexAlpha(alpha);
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+// ============ SPAWN ============
+function spawnBurst(x, y, count) {
+  for (let i = 0; i < count; i++) {
+    if (particles.length >= MAX_PARTICLES) {
+      particles.shift();
+    }
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 6 + 1;
+    const p = new Particle(x, y, getColor());
+    p.vx = Math.cos(angle) * speed;
+    p.vy = Math.sin(angle) * speed;
+    particles.push(p);
+  }
+}
+
+function spawnStream(x, y) {
+  const count = 3;
+  for (let i = 0; i < count; i++) {
+    if (particles.length >= MAX_PARTICLES) {
+      particles.shift();
+    }
+    const p = new Particle(
+      x + (Math.random() - 0.5) * 20,
+      y + (Math.random() - 0.5) * 20,
+      getColor()
+    );
+    p.size = Math.random() * 2.5 + 0.5;
+    particles.push(p);
+  }
+}
+
+// ============ TOUCH / MOUSE ============
+let touched = false;
+const activeTouches = new Map();
+
+function onStart(id, x, y) {
+  if (!touched) {
+    touched = true;
+    hint.style.opacity = '0';
+  }
+  activeTouches.set(id, { x, y, strength: 0.8 });
+  attractors.push({ id, x, y, strength: 0.8 });
+  spawnBurst(x, y, 30);
+}
+
+function onMove(id, x, y) {
+  const t = activeTouches.get(id);
+  if (t) { t.x = x; t.y = y; }
+  const a = attractors.find(a => a.id === id);
+  if (a) { a.x = x; a.y = y; }
+  spawnStream(x, y);
+}
+
+function onEnd(id) {
+  const t = activeTouches.get(id);
+  if (t) {
+    spawnBurst(t.x, t.y, 20);
+  }
+  activeTouches.delete(id);
+  const idx = attractors.findIndex(a => a.id === id);
+  if (idx >= 0) attractors.splice(idx, 1);
+}
+
+// Touch events
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  for (const t of e.changedTouches) onStart(t.identifier, t.clientX, t.clientY);
+}, { passive: false });
+
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  for (const t of e.changedTouches) onMove(t.identifier, t.clientX, t.clientY);
+}, { passive: false });
+
+canvas.addEventListener('touchend', e => {
+  for (const t of e.changedTouches) onEnd(t.identifier);
+});
+
+canvas.addEventListener('touchcancel', e => {
+  for (const t of e.changedTouches) onEnd(t.identifier);
+});
+
+// Mouse fallback
+let mouseDown = false;
+canvas.addEventListener('mousedown', e => {
+  mouseDown = true;
+  onStart('mouse', e.clientX, e.clientY);
+});
+canvas.addEventListener('mousemove', e => {
+  if (mouseDown) onMove('mouse', e.clientX, e.clientY);
+});
+canvas.addEventListener('mouseup', () => { mouseDown = false; onEnd('mouse'); });
+canvas.addEventListener('mouseleave', () => { mouseDown = false; onEnd('mouse'); });
+
+// ============ AUTO AMBIENT PARTICLES ============
+let ambientTimer = 0;
+function ambientSpawn() {
+  ambientTimer++;
+  if (ambientTimer % 30 === 0 && particles.length < 100) {
+    const p = new Particle(
+      Math.random() * W,
+      Math.random() * H,
+      getColor()
+    );
+    p.size = Math.random() * 1.5 + 0.5;
+    p.decay = 0.0008;
+    p.vx = (Math.random() - 0.5) * 0.5;
+    p.vy = (Math.random() - 0.5) * 0.5;
+    particles.push(p);
+  }
+}
+
+// ============ GYROSCOPE (mobile tilt) ============
+let tiltX = 0, tiltY = 0;
+window.addEventListener('deviceorientation', e => {
+  if (e.gamma !== null) tiltX = e.gamma / 90; // -1 to 1
+  if (e.beta !== null) tiltY = (e.beta - 45) / 90;
+});
+
+function applyTilt() {
+  for (const p of particles) {
+    p.vx += tiltX * 0.15;
+    p.vy += tiltY * 0.15;
+  }
+}
+
+// ============ MAIN LOOP ============
+let lastTime = performance.now();
+let frameCount = 0;
+let fpsValue = 60;
+
+function animate(now) {
+  requestAnimationFrame(animate);
+
+  // FPS
+  frameCount++;
+  if (now - lastTime > 1000) {
+    fpsValue = frameCount;
+    frameCount = 0;
+    lastTime = now;
+    fpsEl.textContent = fpsValue + ' fps | ' + particles.length + ' particles';
+  }
+
+  // Clear with fade trail
+  ctx.fillStyle = 'rgba(0, 0, 5, 0.12)';
+  ctx.fillRect(0, 0, W, H);
+
+  drawStars();
+
+  // Update & draw particles
+  for (let i = particles.length - 1; i >= 0; i--) {
+    particles[i].update();
+    if (particles[i].life <= 0) {
+      particles.splice(i, 1);
+    }
+  }
+
+  applyTilt();
+  drawConnections();
+
+  for (const p of particles) {
+    p.draw(ctx);
+  }
+
+  // Draw touch point glow
+  for (const a of attractors) {
+    const gradient = ctx.createRadialGradient(a.x, a.y, 0, a.x, a.y, 60);
+    gradient.addColorStop(0, MODES[modeIndex].colors[0] + '30');
+    gradient.addColorStop(1, 'transparent');
+    ctx.beginPath();
+    ctx.arc(a.x, a.y, 60, 0, Math.PI * 2);
+    ctx.fillStyle = gradient;
+    ctx.fill();
+  }
+
+  ambientSpawn();
+}
+
+requestAnimationFrame(animate);
+
+// ============ DOUBLE TAP FOR BIG BURST ============
+let lastTap = 0;
+canvas.addEventListener('touchend', e => {
+  const now = Date.now();
+  if (now - lastTap < 300) {
+    const t = e.changedTouches[0];
+    spawnBurst(t.clientX, t.clientY, 80);
+  }
+  lastTap = now;
+});
+
+// ============ SHAKE DETECTION ============
+let lastAccel = { x: 0, y: 0, z: 0 };
+window.addEventListener('devicemotion', e => {
+  const a = e.accelerationIncludingGravity;
+  if (!a) return;
+  const delta = Math.abs(a.x - lastAccel.x) + Math.abs(a.y - lastAccel.y) + Math.abs(a.z - lastAccel.z);
+  if (delta > 25) {
+    // Shake detected! Big explosion from center
+    spawnBurst(W / 2, H / 2, 100);
+    cycleMode();
+  }
+  lastAccel = { x: a.x, y: a.y, z: a.z };
+});
+</script>
+</body>
+</html>
