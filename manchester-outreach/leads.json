@@ -1,0 +1,269 @@
+{
+  "_meta": {
+    "researchedOn": "2026-07-25",
+    "region": "Greater Manchester, UK",
+    "criteria": "Active Google Business Profile with real review volume, but no working website of their own.",
+    "verificationNote": "Website-absence was verified by open-web search across directory aggregators, booking platforms and social pages. It was NOT verified through the Google Places API, so each lead carries a confidence rating. Re-check the live Google listing before sending.",
+    "emailNote": "No publicly listed email address was found for any of these five. This is normal: businesses without a website rarely publish one. Each lead records the best available contact route instead. Do not guess an address — confirm it by phone or DM first."
+  },
+  "leads": [
+    {
+      "slug": "coffees-cafe-salford",
+      "name": "Coffee's Cafe",
+      "trade": "Cafe / breakfast and brunch",
+      "borough": "Salford",
+      "address": "Unit 59 Richmond St, Blackfriars Rd, Salford, Manchester M3 7ED",
+      "phone": "07719 355060",
+      "phoneHref": "+447719355060",
+      "google": {
+        "rating": 4.7,
+        "reviewsApprox": 148,
+        "ratingNote": "4.7 across roughly 99-148 reviews depending on the mirror; review count is climbing."
+      },
+      "hours": [
+        ["Monday", "8:30 - 14:00"],
+        ["Tuesday", "8:30 - 14:00"],
+        ["Wednesday", "8:30 - 14:00"],
+        ["Thursday", "8:30 - 14:00"],
+        ["Friday", "8:30 - 14:00"],
+        ["Saturday", "8:30 - 14:00"],
+        ["Sunday", "Closed"]
+      ],
+      "hoursNote": "Hours mirrored from aggregator listings - confirm before publishing.",
+      "websiteStatus": "none",
+      "websiteEvidence": "Only auto-generated aggregator pages exist (restaurantji.co.uk, a goto-where.com subdomain, wanderlog). No own domain found.",
+      "confidence": "high",
+      "contactRoute": "Phone 07719 355060, or in person - it is a small owner-run cafe.",
+      "email": null,
+      "services": [
+        { "name": "Full English breakfast", "note": "The dish reviewers mention most" },
+        { "name": "Bacon and sausage butties", "note": "Morning trade staple" },
+        { "name": "Brunch plates", "note": "Eat in or takeaway" },
+        { "name": "Barista coffee", "note": "Sit-in or grab and go" }
+      ],
+      "highlights": ["Wheelchair-accessible entrance and seating", "Outdoor seating", "Takeaway available"],
+      "review": {
+        "text": "Renowned for delectable breakfasts, from sizzling bacon buttys to hearty full English breakfasts.",
+        "attribution": "Summarised from public reviews"
+      },
+      "theme": { "accent": "#E8A33D", "accent2": "#C2410C", "ink": "#1A1206" },
+      "tagline": "Proper breakfast, five minutes from Blackfriars",
+      "heroPrompt": "Warm inviting British cafe interior at breakfast time, morning light through a window, full English breakfast and a flat white on a wooden table, steam rising, cosy neighbourhood feel, shallow depth of field, photographic, no text, no logos, no people's faces",
+      "websiteCase": {
+        "headline": "Office and student trade searches before it walks",
+        "points": [
+          "Sits between Blackfriars Road and the University of Salford: high volume of office workers and students who search 'breakfast near me' and pick whatever has a menu they can read.",
+          "There is no published menu or price list anywhere online, so the cafe is invisible to anyone deciding where to eat before they leave the building.",
+          "No online ordering or pre-order for takeaway, which is what the weekday 8-9am rush actually wants.",
+          "A one-page site with the menu, prices and a click-to-call number captures searches that currently land on chains and Uber Eats listings."
+        ]
+      }
+    },
+    {
+      "slug": "bandido-barbers-oldham",
+      "name": "Bandido Barbers Oldham",
+      "trade": "Barbershop",
+      "borough": "Oldham (Chadderton)",
+      "address": "256 Manchester Rd, Chadderton, Oldham OL9 7EL",
+      "phone": "07716 492502",
+      "phoneHref": "+447716492502",
+      "google": {
+        "rating": 4.9,
+        "reviewsApprox": 21,
+        "ratingNote": "4.9 out of 5 from 21 ratings - very high satisfaction, low review volume."
+      },
+      "hours": [
+        ["Monday", "9:00 - 18:30"],
+        ["Tuesday", "9:00 - 18:30"],
+        ["Wednesday", "9:00 - 18:30"],
+        ["Thursday", "9:00 - 18:30"],
+        ["Friday", "9:00 - 18:30"],
+        ["Saturday", "9:00 - 18:30"],
+        ["Sunday", "10:00 - 17:00"]
+      ],
+      "websiteStatus": "none",
+      "websiteEvidence": "Fresha booking page and a Facebook page only. No own domain. Directory listings show a phone number with no website field.",
+      "confidence": "high",
+      "contactRoute": "Phone 07716 492502, or the Facebook page. Fresha handles their bookings.",
+      "email": null,
+      "services": [
+        { "name": "Men's haircut", "note": "Skin fades and scissor cuts" },
+        { "name": "Beard trim and shape", "note": "" },
+        { "name": "Hot towel shave", "note": "" },
+        { "name": "Head shave", "note": "" }
+      ],
+      "highlights": ["Own car park", "Seven days a week", "Walk-ins and Fresha bookings"],
+      "review": {
+        "text": "Great barber shop! Good music nice vibes, clean and they also have a car park too which is very convenient. The staff are professional and very friendly. Love the hot towel and steamer too!",
+        "attribution": "Google review"
+      },
+      "theme": { "accent": "#D4A24C", "accent2": "#7C2D12", "ink": "#0E0B08" },
+      "tagline": "Sharp cuts on Manchester Road, seven days a week",
+      "heroPrompt": "Interior of a modern premium barbershop, leather barber chair, warm brass and dark wood tones, clean mirrors and neat tool station, moody directional lighting, empty chair, photographic, no text, no logos, no people",
+      "websiteCase": {
+        "headline": "A 4.9 rating that almost nobody can find",
+        "points": [
+          "4.9 stars but only 21 reviews - the reputation is excellent and the visibility is the bottleneck, not the service.",
+          "Competing Chadderton and Oldham barbers rank above them on 'barbers near me' partly because they have websites feeding Google signals; Bandido has nothing to rank.",
+          "Fresha owns the booking relationship and takes the customer data. Their own site can push bookings while keeping the customer list.",
+          "The free car park is a genuine differentiator in Chadderton and is currently mentioned only inside review text, where searchers never see it."
+        ]
+      }
+    },
+    {
+      "slug": "rochdale-motor-services",
+      "name": "Rochdale Motor Services",
+      "trade": "MOT centre, servicing and repairs",
+      "borough": "Rochdale",
+      "address": "15 St Chad's Close, Rochdale OL16 1QG",
+      "phone": "01706 655551",
+      "phoneHref": "+441706655551",
+      "google": {
+        "rating": 4.5,
+        "reviewsApprox": 84,
+        "ratingNote": "4.5 from 84 Google reviews as surfaced through Fixter."
+      },
+      "hours": [
+        ["Monday", "9:00 - 18:00"],
+        ["Tuesday", "9:00 - 18:00"],
+        ["Wednesday", "9:00 - 18:00"],
+        ["Thursday", "9:00 - 18:00"],
+        ["Friday", "9:00 - 18:00"],
+        ["Saturday", "By arrangement"],
+        ["Sunday", "Closed"]
+      ],
+      "websiteStatus": "none",
+      "websiteEvidence": "Present on Fixter, Regit, MOT Local and Rochdale Online directories. No own domain found in any listing.",
+      "confidence": "high",
+      "contactRoute": "Phone 01706 655551. Third-party booking currently runs through Fixter.",
+      "email": null,
+      "services": [
+        { "name": "MOT testing", "note": "Class 4" },
+        { "name": "Full service and diagnostics", "note": "" },
+        { "name": "Brakes, clutches and mechanical repairs", "note": "" },
+        { "name": "Wheel alignment and tyres", "note": "" }
+      ],
+      "highlights": ["84 Google reviews at 4.5 stars", "Independent, not a main dealer", "Diagnostics on site"],
+      "review": {
+        "text": "The best garage in Rochdale.",
+        "attribution": "Google review"
+      },
+      "theme": { "accent": "#38BDF8", "accent2": "#1D4ED8", "ink": "#070C14" },
+      "tagline": "MOTs, servicing and repairs in Rochdale",
+      "heroPrompt": "Clean professional independent car repair workshop, car raised on a two-post lift, tidy tool wall, blue-grey industrial lighting, no branding, photographic, wide angle, no text, no logos, no people",
+      "websiteCase": {
+        "headline": "'MOT near me' is a website-led search and they have none",
+        "points": [
+          "MOT and servicing are among the highest-intent local searches there are, and price plus earliest available slot decides the booking.",
+          "No published MOT price and no booking form, so every enquiry costs a phone call and is lost entirely outside opening hours.",
+          "Fixter currently intermediates their online bookings and takes a margin on work they would otherwise get direct.",
+          "Competing Rochdale garages that do rank all have simple sites with a price and a booking form - that is the whole gap."
+        ]
+      }
+    },
+    {
+      "slug": "stitches-of-bolton",
+      "name": "Stitches Of Bolton",
+      "trade": "Tailor, alterations and clothing repairs",
+      "borough": "Bolton",
+      "address": "St Andrews Court, 10-11 Mawdsley St, Bolton BL1 1LD",
+      "phone": "01204 385512",
+      "phoneHref": "+441204385512",
+      "google": {
+        "rating": null,
+        "reviewsApprox": null,
+        "ratingNote": "Listed with reviews across Scoot, Cylex, Yably and Yell; a precise current Google star rating was not confirmed. Verify on the live listing before quoting numbers."
+      },
+      "hours": [
+        ["Monday", "9:00 - 17:00"],
+        ["Tuesday", "9:00 - 17:00"],
+        ["Wednesday", "9:00 - 17:00"],
+        ["Thursday", "9:00 - 17:00"],
+        ["Friday", "9:00 - 17:00"],
+        ["Saturday", "9:00 - 16:00"],
+        ["Sunday", "Closed"]
+      ],
+      "hoursNote": "Indicative town-centre hours - confirm with the shop before publishing.",
+      "websiteStatus": "none",
+      "websiteEvidence": "Appears on Scoot, MisterWhat, Cylex, Yably and clothingalterationsnearme.co.uk. No own domain found. Recently moved to St Andrews Court near Crompton Place.",
+      "confidence": "medium",
+      "contactRoute": "Phone 01204 385512, or in person at St Andrews Court.",
+      "email": null,
+      "services": [
+        { "name": "Suit and trouser alterations", "note": "Their core work" },
+        { "name": "Dress and bridal alterations", "note": "" },
+        { "name": "Zip and lining repairs", "note": "" },
+        { "name": "Take-ups and resizing", "note": "Fast turnaround" }
+      ],
+      "highlights": ["Bolton town centre, near Crompton Place", "Quick turnaround", "Precise measuring and fitting"],
+      "review": {
+        "text": "Specialises in suits, trousers and garment adjustments with swift turnaround and careful attention to measurements and fitting.",
+        "attribution": "Summarised from public listings and reviews"
+      },
+      "theme": { "accent": "#C08A6E", "accent2": "#5B2333", "ink": "#120C0E" },
+      "tagline": "Bolton town centre alterations, measured properly",
+      "heroPrompt": "Traditional tailor's workshop, tape measure and chalk on a dark wool suit jacket, vintage sewing machine slightly out of focus behind, warm soft window light, craft and precision mood, photographic, no text, no logos, no people",
+      "websiteCase": {
+        "headline": "A recent move that the internet has not caught up with",
+        "points": [
+          "They moved to St Andrews Court, but older directory entries still list the previous Mawdsley Street address and one even shows a different postcode - customers are being sent to the wrong door.",
+          "Alterations are chosen on turnaround time and price, and neither is published anywhere.",
+          "Wedding and prom alterations are high-value, deadline-driven work that people research online weeks ahead; with no site, they never appear in that research.",
+          "A single page with the correct address, a price guide and turnaround times fixes both the wrong-address problem and the discovery problem."
+        ]
+      }
+    },
+    {
+      "slug": "riz-barbers-chadderton",
+      "name": "Riz Barbers",
+      "trade": "Barbershop",
+      "borough": "Oldham (Chadderton)",
+      "address": "2 Hardman St, Chadderton, Oldham OL9 7PD",
+      "phone": "0161 652 5753",
+      "phoneHref": "+441616525753",
+      "phoneAlt": "07482 680419",
+      "google": {
+        "rating": null,
+        "reviewsApprox": null,
+        "ratingNote": "Strongly and consistently positive review text across localitybiz, Cylex and Fresha; exact current star count not confirmed. Verify on the live listing."
+      },
+      "hours": [
+        ["Monday", "9:00 - 18:00"],
+        ["Tuesday", "9:00 - 18:00"],
+        ["Wednesday", "9:00 - 18:00"],
+        ["Thursday", "9:00 - 18:00"],
+        ["Friday", "9:00 - 19:00"],
+        ["Saturday", "9:00 - 18:00"],
+        ["Sunday", "9:30 - 16:30"]
+      ],
+      "websiteStatus": "dead-business-site",
+      "websiteEvidence": "Listings point to riz-barber.business.site. Google retired Business Profile websites in March 2024 and those URLs now redirect to the Google listing, so the business effectively has no working site. Bookings run through Fresha.",
+      "confidence": "high",
+      "contactRoute": "Phone 0161 652 5753 or 07482 680419. Also on Snapchat and Fresha.",
+      "email": null,
+      "services": [
+        { "name": "Men's haircut", "note": "Fades, scissor cuts, kids' cuts" },
+        { "name": "Beard trim", "note": "" },
+        { "name": "Hot towel shave", "note": "" },
+        { "name": "Head shave", "note": "" }
+      ],
+      "highlights": ["Open seven days", "Walk-ins welcome", "Family and children's cuts"],
+      "review": {
+        "text": "He puts customers first. Every time. He's bang on time, a better level of cut and everything is about the customer. Hassle free.",
+        "attribution": "Google review"
+      },
+      "theme": { "accent": "#E0B252", "accent2": "#155E52", "ink": "#0A0F0D" },
+      "tagline": "On time, every time, on Hardman Street",
+      "heroPrompt": "Warm traditional barbershop interior, classic barber chair and vintage mirror, chrome and dark green tones, hot towel steamer on the counter, soft evening light, welcoming family barbershop mood, photographic, no text, no logos, no people",
+      "websiteCase": {
+        "headline": "Google switched their website off in 2024 and nothing replaced it",
+        "points": [
+          "Their listed website, riz-barber.business.site, was a free Google-built page. Google shut that product down in March 2024 and the address now just bounces back to the Google listing, so the click goes nowhere.",
+          "Anyone who taps 'Website' on the profile learns nothing about prices, services or how to book.",
+          "Reviews repeatedly praise punctuality and fair pricing against a pricier competitor over the road - exactly the message a homepage should lead with, and currently it is buried in review text.",
+          "Fresha holds the booking relationship; their own page can take bookings and keep the repeat-customer list in the shop's hands."
+        ]
+      }
+    }
+  ]
+}
